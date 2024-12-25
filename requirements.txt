@@ -1,7 +1,22 @@
+certifi==2024.12.14
+charset-normalizer==3.4.1
+freetype-py==2.5.1
+glfw==2.8.0
+hsluv==5.0.4
+idna==3.10
 joblib==1.4.2
+kiwisolver==1.4.8
 numpy==2.0.2
-pillow==11.0.0
+p5==0.8.4
+Pillow==9.0.1
+pybind11==2.13.6
+PyOpenGL==3.1.6
+PyOpenGL-accelerate @ git+https://github.com/mcfletch/pyopengl.git@41105583e27264f8e01fb0b711ca8e44ac444f56#subdirectory=accelerate
+requests==2.32.3
 scikit-learn==1.6.0
 scipy==1.14.1
+skia-python==87.6
 threadpoolctl==3.5.0
 tqdm==4.67.1
+urllib3==2.3.0
+vispy==0.10.0

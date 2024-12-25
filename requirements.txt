@@ -1,14 +1,20 @@
+black==24.10.0
 certifi==2024.12.14
 charset-normalizer==3.4.1
+click==8.1.8
 freetype-py==2.5.1
 glfw==2.8.0
 hsluv==5.0.4
 idna==3.10
 joblib==1.4.2
 kiwisolver==1.4.8
+mypy-extensions==1.0.0
 numpy==2.0.2
 p5==0.8.4
+packaging==24.2
+pathspec==0.12.1
 Pillow==9.0.1
+platformdirs==4.3.6
 pybind11==2.13.6
 PyOpenGL==3.1.6
 PyOpenGL-accelerate @ git+https://github.com/mcfletch/pyopengl.git@41105583e27264f8e01fb0b711ca8e44ac444f56#subdirectory=accelerate

@@ -2,16 +2,21 @@ from PIL import Image
 import numpy as np
 from random import random
 from tqdm import tqdm
+from p5 import noise, noise_seed
 
 # Global parameters
 matrix_size = 513  # must be 2**n + 1
 random_division = 1.3
 max_color = 255  # Equivalent to 'Max Saturation' in the original code
 
-def random_range(low, high):
-    return (random() * (high - low)) + low
+noise_seed(1)
 
-def generate_image(image_name):
+
+def noise_range(x, y, z=0, low=0, high=1):
+    return (noise(x, y, z) * (high - low)) + low
+
+
+def generate_image(image_name, image_index):
     mat = np.zeros((matrix_size, matrix_size))
 
     # Diamond-square algorithm
@@ -20,10 +25,16 @@ def generate_image(image_name):
     random_factor = 100  # Initial random variation
 
     # Initialize corners
-    mat[0][0] = random_range(-random_factor, random_factor)
-    mat[0][matrix_size - 1] = random_range(-random_factor, random_factor)
-    mat[matrix_size - 1][0] = random_range(-random_factor, random_factor)
-    mat[matrix_size - 1][matrix_size - 1] = random_range(-random_factor, random_factor)
+    mat[0][0] = noise_range(0, 0, image_index, -random_factor, random_factor)
+    mat[0][matrix_size - 1] = noise_range(
+        0, matrix_size - 1, image_index, -random_factor, random_factor
+    )
+    mat[matrix_size - 1][0] = noise_range(
+        matrix_size - 1, 0, image_index, -random_factor, random_factor
+    )
+    mat[matrix_size - 1][matrix_size - 1] = noise_range(
+        matrix_size - 1, matrix_size - 1, image_index, -random_factor, random_factor
+    )
 
     while space > 1:
         halfspace = space // 2
@@ -37,7 +48,9 @@ def generate_image(image_name):
                     + mat[x + halfspace][y - halfspace]
                     + mat[x + halfspace][y + halfspace]
                 ) / 4
-                mat[x][y] = avg + random_range(-random_factor, random_factor)
+                mat[x][y] = avg + noise_range(
+                    x, y, image_index, -random_factor, random_factor
+                )
 
         # Square step
         offset = 0
@@ -58,7 +71,9 @@ def generate_image(image_name):
                     s += mat[x][y + halfspace]
                     n += 1
                 avg = s / n
-                mat[x][y] = avg + random_range(-random_factor, random_factor)
+                mat[x][y] = avg + noise_range(
+                    x + 1000, y + 1000, image_index, -random_factor, random_factor
+                )
 
         random_factor /= random_division
         space = halfspace
@@ -69,12 +84,14 @@ def generate_image(image_name):
 
     for x in range(matrix_size):
         for y in range(matrix_size):
-            mat[x][y] = int(((mat[x][y] - min_altitude) / (max_altitude - min_altitude)) * max_color)
-    
+            mat[x][y] = int(
+                ((mat[x][y] - min_altitude) / (max_altitude - min_altitude)) * max_color
+            )
+
     mat = mat.astype(np.uint8)
     im = Image.fromarray(mat, mode="L")
+    im.show()
     im.save(f"images/{image_name}.png", compress_level=0)
 
 
-for i in tqdm(range(1000)):
-    generate_image(f"image_{i}")
+generate_image(f"image", 0)
